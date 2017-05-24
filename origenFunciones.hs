@@ -8,8 +8,9 @@ doubleUs x y = doubleMe x + doubleMe y
 --        x*2}
 doubleSmallNumber x = if x > 100
                   then x
-                  --la parte else es obligatoria
+                  --la parte else es obligatoria si se usa un if
                   else x*2
+
 --definición estricta de una función, o una pequeña variante, se indica con '
 doubleSmallNumber' x = (if x > 100 then x else x*2) + 1 
 

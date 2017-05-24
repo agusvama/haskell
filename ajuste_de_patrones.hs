@@ -1,13 +1,3 @@
-
---dando un tipo explícito a la función
-limpiaMinus :: [Char] -> [Char]
-limpiaMinus xs = [x | x <- xs, elem x ['A'..'Z']]
-
-
---triangulos cuyos lados miden menos que 10 y además son rectos
---lado b < c, lado a < b
-triangles = [ (a,b,c) | c <- [1..30], b <- [1..c], a <- [1..b], a^2 + b^2 == c^2 ]
-
 --el tipo que devuelve la función es el último, todos los anteriores son parámetros
 sumaTresNumeros :: Int -> Int -> Int -> Int
 sumaTresNumeros x y z = x + y + z
@@ -25,9 +15,9 @@ addVectors :: (Num a) => (a, a) -> (a, a) -> (a, a)
 addVectors a b = (fst a + fst b, snd a + snd b)
 --porque recibir 2 cosas?, si puedo moldearlas con
 --un patrón a mi antojo
--- addVectors :: (Num a) => (a, a) -> (a, a) -> (a, a)
 addVectors (x1, y1) (x2, y2) = (x1 + x2, y1 + y2)
 
+--primero, medio y último desde una tripla
 first :: (a, b, c) -> a
 first (x, _, _) = x
 
@@ -43,9 +33,10 @@ tell (x:[])   = "La lista tiene un elemento: " ++ show x
 tell (x:y:[]) = "La lista tiene dos elementos: " ++ show x ++ " y " ++ show y
 tell (x:y:_)  = "La lista es larga. Los primeros dos elementos son: " ++ show x ++ " y " ++ show y
 
+--combina ajuste de patrones con recursividad
 length' :: (Num b) => [a] -> b
-length' [] = 0
-length' (_:xs) = 1 + length' xs
+length' [] = 0 --caso base
+length' (_:xs) = 1 + length' xs --recursividad con operación pendiente (length' xs)
 
 sum' :: (Num a) => [a] -> a
 sum' [] = 0
@@ -55,37 +46,10 @@ capital :: String -> String
 capital "" = "¡Una cadena vacía!"
 capital all@(x:_) = "La primera letra de " ++ all ++ " es " ++ [x]
 
---las guardas son como una estructura case
-bmiTell :: (RealFloat a) => a -> a -> String
-bmiTell weight height
-  | bmi <= skinny = "Tienes infrapeso ¿eres emo?"
-  | bmi <= normal = "Supuestamente eres normal... espero que seas feo"
-  | bmi <= fat = "estás gordo, pierde algo de peso"
-  | otherwise = "felicidades, eres una ballena!"
-  where bmi = weight / height ^ 2
-        skinny = 18.5
-        normal = 25.0
-        fat = 30.0
 
 calcBmis :: (RealFloat a) => [(a, a)] -> [a]
 calcBmis xs = [bmi w h | (w, h) <- xs]
   where bmi weight height = weight / height ^ 2
 
---let, in
---let <definicion> in <expresion>
--- [let square x = x * x in (square 5, square 3, square 2)]
-
 calcBmis' :: (RealFloat a) => [(a, a)] -> [a]
 calcBmis' xs = [bmi | (w, h) <- xs, let bmi = w / h ^ 2]
-
-describeList :: [a] -> String
-describeList xs = "La lista es " ++ case xs of []  -> "una lista vacía."
-                                              [x] -> "una lista unitaria."
-                                              xs  -> "una lista larga."
-
-describeList' :: [a] -> String
-describeList' xs = "The list is " ++ what xs
-    where what [] = "empty."
-              what [x] = "a singleton list."
-                        what xs = "a longer list."
-
